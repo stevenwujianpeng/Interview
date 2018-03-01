@@ -1,5 +1,5 @@
 # Interview
-## 2018年前端面试题目&amp;公司总结
+## 2018年最新前端面试题目&amp;公司总结
 
 D:
  1. 如何实现垂直居中？
@@ -13,12 +13,14 @@ D:
  9. vue 的实现原理是？
  10. 控制台中 0.1 + 0.2 = ？
  11. ES6里面有哪些特性和语法？
+ 12. Vue有哪些钩子函数？
 
 D:
 
  1. react中有哪些周期函数？
  2. vue 跟 react 之间的区别有哪些方面？
  3. ES6里面有哪些特性和语法？
+ 4. 在多个Promise调用链中如何在某个then中捕捉到错误，但是不停止then语句的执行？
 
 H:
 
@@ -29,6 +31,8 @@ H:
  5. 介绍一下盒模型 box-sizing: content-box / border-box
 
 ## 附上部分问题的解答或者相对应的链接：
+
+```基础
 
 1. 介绍一下盒模型 box-sizing: content-box / border-box
 
@@ -43,5 +47,24 @@ H:
 答：1. let const              2. 解构赋值
     3. class                  4. Module 语法
     5. Arrow function  ...
-具体的文档可以参见阮一峰的ES6入门文档：http://es6.ruanyifeng.com/#README    
+具体的文档可以参见阮一峰的ES6入门文档：http://es6.ruanyifeng.com/#README
+    
+```
+
+```关于Vue    
+
+1. Vue的钩子函数有哪些？
+答：中文官方文档：https://cn.vuejs.org/v2/guide/instance.html
+    beforeCreate,
+    created
+    beforeMount
+    mounted
+    beforeUpdate
+    updated
+    beforeDestroy
+    destroyed
+    
+2. 在这个生命周期中，Vue都做了哪些事情？
+    
+```    
     

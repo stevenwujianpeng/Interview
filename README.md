@@ -37,20 +37,17 @@ H:
 1. 介绍一下盒模型 box-sizing: content-box / border-box
 
 答：https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Getting_started/Boxes
----------------------------------------
 
 2. 0.1 + 0.2 = ？ 
 
 答：因为小数在计算机底层都是近似表示，并不是准确的。整数计算是准确的。
 具体可以参见深入计算机系统里面的数字二进制表示
----------------------------------------
 
 3. ES6里面有哪些常用的特性？
 答：1. let const              2. 解构赋值
     3. class                  4. Module 语法
     5. Arrow function  ...
 具体的文档可以参见阮一峰的ES6入门文档：http://es6.ruanyifeng.com/#README
----------------------------------------
 
 4. 事件点透
 答：产生原因：移动端click事件300ms延迟导致的
@@ -68,8 +65,7 @@ H:
     beforeUpdate
     updated
     beforeDestroy
-    destroyed
----------------------------------------    
+    destroyed    
     
 2. 在这个生命周期中，Vue都做了哪些事情？
     

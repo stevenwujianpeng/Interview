@@ -261,7 +261,156 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
 }
 ```
 
+9. 当定时器结束的时候，就开始执行 Watcher.prototype.run ()
 
+```javascript
+Watcher.prototype.run = function run() {
+    if (this.active) {
+        var value = this.get();
+        if (
+            value !== this.value ||
+            // Deep watchers and watchers on Object/Arrays should fire even
+            // when the value is the same, because the value may
+            // have mutated.
+            isObject(value) ||
+            this.deep
+        ) {
+            // set new value
+            var oldValue = this.value;
+            this.value = value;
+            if (this.user) {
+                try {
+                    this.cb.call(this.vm, value, oldValue);
+                } catch (e) {
+                    handleError(e, this.vm, ("callback for watcher \"" + (this.expression) + "\""));
+                }
+            } else {
+                this.cb.call(this.vm, value, oldValue);
+            }
+        }
+    }
+};
+// 中间还有很多处理流程，先跳过，直接到
+```
+10. vm._update(vm._render(), hydrating)
+````javascript
+/**
+* 主要是重新生成 vNode 虚拟节点
+* 
+* */
+Vue.prototype._render = function () {
+            var vm = this;
+            var ref = vm.$options;
+            var render = ref.render;
+            var _parentVnode = ref._parentVnode;
+
+            if (vm._isMounted) {
+                // if the parent didn't update, the slot nodes will be the ones from
+                // last render. They need to be cloned to ensure "freshness" for this render.
+                for (var key in vm.$slots) {
+                    var slot = vm.$slots[key];
+                    // _rendered is a flag added by renderSlot, but may not be present
+                    // if the slot is passed from manually written render functions
+                    if (slot._rendered || (slot[0] && slot[0].elm)) {
+                        vm.$slots[key] = cloneVNodes(slot, true /* deep */);
+                    }
+                }
+            }
+
+            vm.$scopedSlots = (_parentVnode && _parentVnode.data.scopedSlots) || emptyObject;
+
+            // set parent vnode. this allows render functions to have access
+            // to the data on the placeholder node.
+            vm.$vnode = _parentVnode;
+            // render self
+            var vnode;
+            try {
+                vnode = render.call(vm._renderProxy, vm.$createElement);
+            } catch (e) {
+                handleError(e, vm, "render");
+                // return error render result,
+                // or previous vnode to prevent render error causing blank component
+                /* istanbul ignore else */
+                {
+                    if (vm.$options.renderError) {
+                        try {
+                            vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
+                        } catch (e) {
+                            handleError(e, vm, "renderError");
+                            vnode = vm._vnode;
+                        }
+                    } else {
+                        vnode = vm._vnode;
+                    }
+                }
+            }
+            // return empty vnode in case the render function errored out
+            if (!(vnode instanceof VNode)) {
+                if ("development" !== 'production' && Array.isArray(vnode)) {
+                    warn(
+                        'Multiple root nodes returned from render function. Render function ' +
+                        'should return a single root node.',
+                        vm
+                    );
+                }
+                vnode = createEmptyVNode();
+            }
+            // set parent
+            vnode.parent = _parentVnode;
+            return vnode
+        };
+````
+
+插入一段vNode的源码定义：
+```javascript
+var VNode = function VNode (
+        tag,
+        data,
+        children,
+        text,
+        elm,
+        context,
+        componentOptions,
+        asyncFactory
+    ) {
+        this.tag = tag;
+        this.data = data;
+        this.children = children;
+        this.text = text;
+        this.elm = elm;
+        this.ns = undefined;
+        this.context = context;
+        this.fnContext = undefined;
+        this.fnOptions = undefined;
+        this.fnScopeId = undefined;
+        this.key = data && data.key;
+        this.componentOptions = componentOptions;
+        this.componentInstance = undefined;
+        this.parent = undefined;
+        this.raw = false;
+        this.isStatic = false;
+        this.isRootInsert = true;
+        this.isComment = false;
+        this.isCloned = false;
+        this.isOnce = false;
+        this.asyncFactory = asyncFactory;
+        this.asyncMeta = undefined;
+        this.isAsyncPlaceholder = false;
+    };
+```
+
+11. 当更新完vNode然后就继续执行到 lifecycleMixin
+```javascript
+// 省略了很多函数的语句，只抽取了相关的部分
+function lifecycleMixin() {
+  // updates
+  vm.$el = vm.__patch__(prevVnode, vnode);
+}
+```
+
+12. 那么就继续执行到 vm.__patch(prevVnode, vnode)
+
+13. 比对之前的vNode 和更新后的vnode，比对，然后将vnode同步到真实的dom (中间省略了很多的细节)
 
  
 

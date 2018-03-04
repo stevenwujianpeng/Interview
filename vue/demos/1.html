@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
 </head>
 <body>
 <div id="app">
-    {{ message }}
+    <input type="text" placeholder="请输入您的名字" id="name">
 </div>
-<script type="text/javascript">
-    var app = new Vue({
-        el: '#app',
-        data: {
-            message: 'Hello Vue!'
-        }
-    })
+<script>
+    var inputEl = document.getElementById('name')
+
+    function startInsert(count) {
+        setTimeout(function () {
+            var textNode =null
+
+            for (var i =0 ; i< count; i++) {
+                textNode = document.createElement('p')
+                textNode.textContent = '吴建鹏'
+                document.body.appendChild(textNode)
+            }
+        })
+    }
+
 </script>
 </body>
 </html>

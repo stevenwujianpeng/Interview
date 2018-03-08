@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用 js 实现监听页面上的 JSONP 请求，把请求的地址打印出来</title>
+</head>
+<body>
+<script type="text/javascript">
+    document.addEventListener('DOMNodeInserted', function (event) {
+        var element = event.target
+
+        if (element.nodeName === 'SCRIPT' && element.src.indexOf('?') > -1) {
+            console.log(element.src)
+        }
+    })
+</script>
+</body>
+</html>

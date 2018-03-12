@@ -19,6 +19,7 @@
   "dependencies": {
     "clipboard": "^2.0.0",
     "fastclick": "^1.0.6",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.5",
+    "vue": "^2.5.15"
   }
 }

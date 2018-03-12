@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    /**
+     * 一个数组例如【3，-2，1，2，-1，0，1】及一个数字例如0，
+     * 数组里任选2位成员相加等于这个数字的，提取出来，如例子的答案是【【-2，2】，【1，-1】】（不要重复的）
+     *
+     *
+     * */
+    function selectPair(sum) {
+        let pairs = []
+        let arr = [3, -2, 1, 2, -1, 0, 1]
+        let usedArrIndex = []
+        let length = arr.length
+
+        for (let i = 0; i < length; i++) {
+            for (let j = 0; j < length; j++) {
+                let pair = []
+
+                if (usedArrIndex.includes(i) || usedArrIndex.includes(j)) {
+                    continue
+                }
+
+                if (i === j) {
+                    continue
+                }
+
+                let outside = arr[i]
+                let inside = arr[j]
+
+                if ((outside + inside) === sum) {
+                    usedArrIndex.push(i)
+                    usedArrIndex.push(j)
+                    pair = [outside, inside]
+                    pairs.push(pair)
+
+                    continue
+                }
+            }
+        }
+
+        return pairs
+    }
+
+    console.log(selectPair(0))
+</script>
+</body>
+</html>

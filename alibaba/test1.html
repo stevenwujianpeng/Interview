@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /**
+     * 请实现一个通用的Array解构赋值方法 destructuringArray，
+     *     可将目标数组（targetArray）通过ES6的解构格式（formater），
+     *     输出解构结果对象。
+     *
+     * 设计参考（可选提供）：
+     *
+     * - 通过优化函数名及参数语义以方便考生快速理解题目。
+     *   - 函数名为 destructuringArray（解构数组）功能是将目标数组通过以下解构格式解构为最终对象。
+     *   - 入参1是目标数组：targetArray{array}
+     *   - 入参2是解构格式：formater{string}
+     *   - 输出为 {object}，。
+     *
+     *   Example:
+     *      destructuringArray( [1,[2,4],3], "[a,[b],c]" );
+     *      // result
+     *      { a:1, b:2, c:3 }
+     *
+     *   实现思路:
+     *      1. 正则匹配出所有的变量名
+     *      2. 完成声明
+     *      3. 把targetArray跟formater做一个映射，并将值赋值给dict里面的属性名
+     *
+     */
+
+    var targetArray = [1, [2, 4], 3, [1, 2]]; // 先准备好目标数组
+    var formater = '[a,[b],c,[d]]';    // 再准备好解构格式
+
+    // var targetArray = [1, 2, 4]; // 先准备好目标数组
+    // var formater = '[a,b,c]';    // 再准备好解构格式
+
+    /**
+     * 解构数组
+     * @param targetArray{Array} 目标数组
+     * @param formater{String} 解构格式
+     * @return {Object} 结果对象
+     */
+    var destructuringArray = function (targetArray, formater) {
+        var res = {}
+
+        function subDestructing(targetArray, formater) {
+            var formaterArray = []
+            var resultArray = []
+            var key, value
+
+            formater = formater.slice(1, -1)
+            formaterArray = formater.split(',')
+
+            for (var i = 0; i < formaterArray.length; i++) {
+                key = formaterArray[i]
+                value = targetArray[i]
+
+                if (Object.prototype.toString.apply(value) === '[object Array]') {
+                    subDestructing(value, key)
+                }
+
+                if (/^\w+$/.test(key)) {
+                    res[key] = value
+                }
+            }
+        }
+
+        subDestructing(targetArray, formater)
+
+        console.log(res)
+        return res
+    };
+
+    console.log(destructuringArray(targetArray, formater));
+</script>
+</body>
+</html>

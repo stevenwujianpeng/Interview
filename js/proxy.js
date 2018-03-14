@@ -1,18 +1,31 @@
-var obj = new Proxy({}, {
-    get: function (target, key, receiver) {
-        console.log(`getting ${key}!`);
-        return Reflect.get(target, key, receiver);
-    },
-    set: function (target, key, value, receiver) {
-        console.log(`setting ${key}!`);
-        return Reflect.set(target, key, value, receiver);
-    }
-});
+const Vue = require('vue')
+const server = require('express')()
+const renderer = require('vue-server-renderer').createRenderer()
 
-obj.count = 1
-//  setting count!
-++obj.count
-//  getting count!
-//  setting count!
-//  2
-obj.count
+server.get('*', (req, res) => {
+
+    const app = new Vue({
+        data: {
+            url: req.url
+        },
+        template: `<div>访问的 URL 是： {{ url }}</div>`
+    })
+
+    renderer.renderToString(app, (err, html) => {
+        if (err) {
+            res.status(500).end('Internal Server Error')
+            return
+        }
+        res.end(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+            <title>Hello</title>
+            <meta charset="utf-8">
+        </head>
+        <body>${html}</body>
+      </html>
+    `)
+    })
+})
+server.listen(3030)

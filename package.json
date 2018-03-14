@@ -18,8 +18,13 @@
   "homepage": "https://github.com/stevenwujianpeng/Interview#readme",
   "dependencies": {
     "clipboard": "^2.0.0",
+    "express": "^4.16.3",
     "fastclick": "^1.0.6",
     "lodash": "^4.17.5",
-    "vue": "^2.5.15"
+    "vue": "^2.5.15",
+    "vue-server-renderer": "^2.5.15"
+  },
+  "devDependencies": {
+    "webpack": "^4.1.1"
   }
 }

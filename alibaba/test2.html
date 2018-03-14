@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--    在编写搜索框组件的过程中，要求搜索结果可以实时响应，
+        然而每次用户输入都向服务器发请求会给服务器造成过大的压力，
+        所以要求在用户不断的输入文本的同时，组件会 按固定的频率发送搜索请求。
+        请实现一个通用的函数，它接受第一个参数 action 代表一个函数，第二个参数 threshold 用于指定频率，
+        它返 回一个新的函数，当新的函数在被不断调用时，action 会(依旧)按指定频率运行。用例如下：
+-->
+<script>
+    function Proxy(func, threshold) {
+        var data = {
+            text: '',
+            threshold: threshold,
+            timer: null,
+            func: func
+        }
+
+        return Proxy.trigger.bind(data)
+    }
+
+    Proxy.trigger = function (text) {
+        var self = this
+
+        self.text = text
+
+        if (self.timer) {
+            return
+        }
+
+        self.timer = setTimeout(function () {
+            self.func.call(null, self.text)
+            clearTimeout(self.timer)
+            self.timer = null
+            console.log(self)
+        }, self.threshold)
+    }
+
+    function searchFn(val) {
+        console.log('当前搜索的内容是:' + val)
+    }
+
+    var triggerSearch = Proxy(searchFn, 3000)
+
+    triggerSearch('洗发水!')
+</script>
+</body>
+</html>

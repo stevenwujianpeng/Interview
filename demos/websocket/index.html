@@ -16,6 +16,9 @@
         console.log('ws onmessage');
         console.log('from server: ' + e.data);
     };
+    // 增加错误处理
+    ws.onerror = function () {
+    }
 </script>
 </body>
 </html>
